@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/applicationContext.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>application</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.request.charset</param-name>
+        <param-value>UTF-8</param-value>
+    </context-param>
+
+    <!-- FILTERS -->
+
+    <!-- SERVLETS -->
+
+    <servlet>
+        <servlet-name>_ah_sessioncleanup</servlet-name>
+        <servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>mvc-dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/spring/applicationContext.xml</param-value>
+        </init-param>
+
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- FILTER MAPPINGS -->
+
+    <!-- SERVLET MAPPINGS -->
+
+    <servlet-mapping>
+        <servlet-name>mvc-dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>_ah_sessioncleanup</servlet-name>
+        <url-pattern>/_ah/sessioncleanup</url-pattern>
+    </servlet-mapping>
+
+    <!-- SECURITY CONSTRAINTS -->
+
+</web-app>

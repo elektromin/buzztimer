@@ -1,0 +1,19 @@
+<div class="alert alert-info" ng-if="stations.closestStation == null && stations.error == null">
+    <i>Laddar...</i>
+</div>
+
+<div ng-if="stations.error != null">
+    <div class="alert alert-danger">
+        <strong>Ett fel har inträffat!</strong>
+    </div>
+    <code>{{stations.error}}</code>
+</div>
+
+<div ng-if="stations.closestStation != null">
+    <h3>{{stations.closestStation.name}}</h3>
+    <p>
+        id: {{stations.closestStation.id}}<br/>
+        avstånd: {{stations.closestStation.distance}} meter<br/>
+        position: {{stations.closestStation.latitude}}, {{stations.closestStation.longitude}}
+    </p>
+</div>

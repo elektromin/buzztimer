@@ -1,0 +1,30 @@
+<div class="alert alert-info" ng-if="departures.result == null && departures.error == null">
+    <i>Laddar...</i>
+</div>
+
+<div ng-if="departures.error != null">
+    <div class="alert alert-danger">
+        <strong>Ett fel har inträffat!</strong>
+    </div>
+    <code>{{departures.error}}</code>
+</div>
+
+<div ng-if="departures.result != null" ng-repeat="station in departures.result.stations">
+    <p><b>{{station.name}}</b> {{station.distance}} m</p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Linje</th>
+            <th>Mot</th>
+            <th>Om</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="departure in station.departures">
+            <td>{{departure.lineNumber}}</td>
+            <td>{{departure.destination}}</td>
+            <td>{{departure.displayTime}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

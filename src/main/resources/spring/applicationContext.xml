@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!-- SERVICES -->
+
+    <bean id="departureService" class="se.elektromin.buzztimer.service.DepartureService">
+        <property name="slApiEndpoint" ref="slApiEndpoint"/>
+    </bean>
+
+    <!-- ENDPOINTS -->
+
+    <bean id="slApiEndpoint" class="se.elektromin.buzztimer.endpoint.SlApiEndpoint">
+        <property name="gsonParser" ref="gsonParser"/>
+        <property name="baseUri" value="${sl.endpoint.baseuri}"/>
+        <property name="readTimeout" value="${sl.endpoint.timeout.read-ms}"/>
+        <property name="connectionTimeout" value="${sl.endpoint.timeout.connect-ms}"/>
+        <property name="nearbystopsKey" value="${sl.endpoint.nearbystops.key}"/>
+        <property name="realtimeDeparturesKey" value="${sl.endpoint.realtimeDepartures.key}"/>
+        <property name="debug" value="false"/>
+    </bean>
+
+    <!-- GSON PARSERS -->
+
+    <bean id="gsonParser" class="se.elektromin.buzztimer.util.GsonParser"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
+                <property name="gson">
+                    <bean class="com.google.gson.Gson" factory-bean="gsonParser" factory-method="getGson"/>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- MVC -->
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/views/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+
+    <!-- API CONTROLLERS -->
+    <bean class="se.elektromin.buzztimer.api.HelloController"/>
+
+    <bean class="se.elektromin.buzztimer.api.ApiController">
+        <property name="departureService" ref="departureService"/>
+    </bean>
+</beans>
